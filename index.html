@@ -3,983 +3,1323 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 3 — DBMS Study Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Module 3 – DBMS Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0f17;
-    --surface: #13161f;
-    --surface2: #1a1e2b;
-    --surface3: #232838;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --card: #1a1e2a;
+    --border: #252a38;
+    --accent1: #5ee7c2;
+    --accent2: #ff7c5c;
+    --accent3: #a78bfa;
+    --accent4: #fbbf24;
     --text: #e8eaf0;
-    --muted: #8890a8;
-    --accent: #5b8dff;
-    --accent2: #a78bfa;
-    --green: #34d399;
-    --amber: #fbbf24;
-    --red: #f87171;
-    --teal: #2dd4bf;
-    --pink: #f472b6;
-    --font: 'Sora', sans-serif;
-    --mono: 'JetBrains Mono', monospace;
+    --muted: #8892a4;
+    --heading: #ffffff;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Syne', sans-serif;
+    --serif: 'Lora', serif;
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
   html { scroll-behavior: smooth; }
+
   body {
-    font-family: var(--font);
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
-    line-height: 1.6;
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.8;
   }
 
   /* ── HEADER ── */
-  .header {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(13,15,23,0.92);
-    backdrop-filter: blur(16px);
+  header {
+    background: linear-gradient(135deg, #0d0f14 0%, #13161e 50%, #1a1228 100%);
     border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
   }
-  .header-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: flex; align-items: center; gap: 1rem;
-    height: 56px; overflow-x: auto;
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% -20%, rgba(94,231,194,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent1);
+    border: 1px solid rgba(94,231,194,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  header h1 {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    color: var(--heading);
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent1); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,15,20,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
     scrollbar-width: none;
   }
-  .header-inner::-webkit-scrollbar { display: none; }
-  .logo {
-    font-size: 13px; font-weight: 600; color: var(--accent);
-    white-space: nowrap; letter-spacing: .04em;
-    margin-right: .5rem; font-family: var(--mono);
+  nav::-webkit-scrollbar { display: none; }
+  nav a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 14px 14px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
   }
-  .nav-btn {
-    background: none; border: 1px solid transparent;
-    color: var(--muted); font-family: var(--font);
-    font-size: 12.5px; padding: 5px 14px; border-radius: 20px;
-    cursor: pointer; white-space: nowrap; transition: all .18s;
-  }
-  .nav-btn:hover { color: var(--text); border-color: var(--border2); }
-  .nav-btn.active {
-    background: var(--surface2); color: var(--accent);
-    border-color: rgba(91,141,255,0.3);
-  }
+  nav a:hover { color: var(--accent1); border-bottom-color: var(--accent1); }
 
   /* ── LAYOUT ── */
-  .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-  .section { display: none; animation: fadeUp .25s ease; }
-  .section.active { display: block; }
-  @keyframes fadeUp {
-    from { opacity:0; transform: translateY(8px); }
-    to   { opacity:1; transform: translateY(0); }
-  }
+  main { max-width: 1000px; margin: 0 auto; padding: 48px 24px 80px; }
 
-  /* ── HERO SECTION ── */
-  .hero {
-    text-align: center; padding: 3rem 1rem 2rem;
-    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(91,141,255,0.12), transparent);
-    border-radius: 20px; margin-bottom: 2rem;
+  /* ── SECTIONS ── */
+  section { margin-bottom: 72px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
   }
-  .hero-tag {
-    display: inline-block; font-family: var(--mono); font-size: 11px;
-    background: rgba(91,141,255,0.12); color: var(--accent);
-    border: 1px solid rgba(91,141,255,0.25); border-radius: 20px;
-    padding: 4px 14px; margin-bottom: 1rem; letter-spacing: .08em;
-  }
-  .hero h1 {
-    font-size: clamp(24px, 4vw, 38px); font-weight: 700;
-    line-height: 1.15; margin-bottom: .75rem;
-    background: linear-gradient(135deg, #e8eaf0 30%, var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .hero p { color: var(--muted); font-size: 14px; max-width: 500px; margin: 0 auto; }
-
-  /* ── SECTION TITLE ── */
-  .sec-title {
-    font-size: 20px; font-weight: 600; margin-bottom: 1.25rem;
-    display: flex; align-items: center; gap: .6rem;
-  }
-  .sec-title::before {
-    content:''; width:3px; height:20px; border-radius:2px;
-    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  .section-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
     flex-shrink: 0;
   }
-  .sub-title { font-size: 15px; font-weight: 600; color: var(--text); margin: 1.5rem 0 .75rem; }
+  .section-header h2 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--heading);
+  }
+  .section-header .number {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
 
   /* ── CARDS ── */
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 12px; margin-bottom: 1.5rem; }
-  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); }
   .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 1.1rem 1.25rem;
-    transition: border-color .2s, transform .2s;
-  }
-  .card:hover { border-color: var(--border2); transform: translateY(-1px); }
-  .card-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: .35rem; }
-  .card-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
-  .card-body b { color: var(--text); font-weight: 500; }
-
-  /* ── BADGES ── */
-  .badge {
-    display: inline-block; font-size: 10.5px; font-weight: 600;
-    padding: 3px 10px; border-radius: 20px; margin-bottom: 8px;
-    letter-spacing: .04em; font-family: var(--mono);
-  }
-  .b-blue   { background: rgba(91,141,255,.15); color: #7aaeff; border: 1px solid rgba(91,141,255,.2); }
-  .b-green  { background: rgba(52,211,153,.15); color: #34d399; border: 1px solid rgba(52,211,153,.2); }
-  .b-amber  { background: rgba(251,191,36,.13); color: #fbbf24; border: 1px solid rgba(251,191,36,.2); }
-  .b-red    { background: rgba(248,113,113,.13); color: #f87171; border: 1px solid rgba(248,113,113,.2); }
-  .b-purple { background: rgba(167,139,250,.13); color: #a78bfa; border: 1px solid rgba(167,139,250,.2); }
-  .b-teal   { background: rgba(45,212,191,.13); color: #2dd4bf; border: 1px solid rgba(45,212,191,.2); }
-  .b-pink   { background: rgba(244,114,182,.13); color: #f472b6; border: 1px solid rgba(244,114,182,.2); }
-
-  /* ── CALLOUT ── */
-  .callout {
-    border-radius: 12px; padding: .9rem 1.1rem;
-    font-size: 13px; line-height: 1.65; margin-bottom: 1.25rem;
-  }
-  .callout-info  { background: rgba(91,141,255,.08); border: 1px solid rgba(91,141,255,.2); color: #a3bfff; }
-  .callout-warn  { background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.18); color: #fcd87a; }
-  .callout-green { background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.18); color: #6ee7c7; }
-  .callout b { font-weight: 600; }
-
-  /* ── TABLE ── */
-  .tbl-wrap { overflow-x: auto; margin-bottom: 1.5rem; border-radius: 12px; border: 1px solid var(--border); }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th {
-    background: var(--surface2); padding: 10px 14px;
-    text-align: left; font-weight: 600; color: var(--text);
-    border-bottom: 1px solid var(--border); font-size: 12px;
-    letter-spacing: .03em;
-  }
-  td {
-    padding: 10px 14px; border-bottom: 1px solid var(--border);
-    color: var(--muted); vertical-align: top; line-height: 1.55;
-  }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(255,255,255,.02); }
-
-  /* ── FLASHCARDS ── */
-  .fc-hint { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
-  .fc-wrap { perspective: 1200px; cursor: pointer; margin-bottom: 1rem; }
-  .fc-inner {
-    min-height: 140px; position: relative;
-    transform-style: preserve-3d; transition: transform .42s cubic-bezier(.4,0,.2,1);
-    border-radius: 16px;
-  }
-  .fc-inner.flipped { transform: rotateY(180deg); }
-  .fc-front, .fc-back {
-    position: absolute; top:0; left:0; width:100%; min-height:140px;
-    border-radius: 16px; padding: 1.5rem; backface-visibility: hidden;
-    display: flex; align-items: center; justify-content: center;
-    text-align: center; flex-direction: column; gap: .5rem;
-  }
-  .fc-front {
-    background: linear-gradient(135deg, rgba(91,141,255,.12), rgba(167,139,250,.1));
-    border: 1px solid rgba(91,141,255,.25);
-  }
-  .fc-front .q { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.4; }
-  .fc-front .hint { font-size: 11px; color: var(--muted); font-family: var(--mono); }
-  .fc-back {
-    background: linear-gradient(135deg, rgba(52,211,153,.1), rgba(45,212,191,.08));
-    border: 1px solid rgba(52,211,153,.22);
-    transform: rotateY(180deg);
-  }
-  .fc-back .a { font-size: 13px; color: #a7f3d0; line-height: 1.7; }
-  .fc-controls {
-    display: flex; align-items: center; justify-content: center;
-    gap: 12px; margin-top: .25rem;
-  }
-  .fc-btn {
-    background: var(--surface2); border: 1px solid var(--border2);
-    color: var(--text); font-family: var(--font); font-size: 13px;
-    padding: 7px 22px; border-radius: 24px; cursor: pointer; transition: all .18s;
-  }
-  .fc-btn:hover { background: var(--surface3); }
-  .fc-count { font-family: var(--mono); font-size: 12px; color: var(--muted); min-width: 60px; text-align: center; }
-
-  /* ── EXAM Qs ── */
-  .eq-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 1.1rem 1.25rem; margin-bottom: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px 28px;
+    margin-bottom: 18px;
     transition: border-color .2s;
   }
-  .eq-card:hover { border-color: var(--border2); }
-  .eq-q { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: .75rem; line-height: 1.45; }
-  .eq-marks {
-    display: inline-block; font-family: var(--mono); font-size: 10px;
-    color: var(--amber); background: rgba(251,191,36,.1);
-    border: 1px solid rgba(251,191,36,.2); border-radius: 20px;
-    padding: 2px 8px; margin-left: 8px;
+  .card:hover { border-color: rgba(94,231,194,0.25); }
+  .card h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--heading);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
-  .show-btn {
-    background: none; border: 1px solid var(--border2);
-    color: var(--muted); font-family: var(--font); font-size: 12px;
-    padding: 5px 14px; border-radius: 20px; cursor: pointer; transition: all .18s;
-  }
-  .show-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .eq-ans {
-    display: none; margin-top: .9rem; font-size: 13px; color: var(--muted);
-    line-height: 1.7; background: var(--surface2); border-radius: 10px;
-    padding: .9rem 1.1rem; border-left: 3px solid var(--green);
-  }
-  .eq-ans.show { display: block; }
-  .eq-ans b { color: var(--text); font-weight: 500; }
+  .card p, .card li { color: var(--text); font-size: 0.95rem; }
+  .card ul { padding-left: 18px; }
+  .card ul li { margin-bottom: 6px; }
 
-  /* ── CODE STYLE ── */
-  .code {
-    font-family: var(--mono); font-size: 12.5px; background: var(--surface2);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: .75rem 1rem; margin: .5rem 0; color: #a3e8ff; line-height: 1.6;
-    white-space: pre-wrap; overflow-x: auto;
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: linear-gradient(135deg, rgba(94,231,194,0.07), rgba(94,231,194,0.03));
+    border-left: 3px solid var(--accent1);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 14px 0;
+    font-style: italic;
+    color: var(--accent1);
+    font-size: 0.9rem;
   }
 
-  /* ── STEP LIST ── */
-  .steps { list-style: none; padding: 0; }
-  .steps li {
-    padding: .55rem 0 .55rem 2.2rem; position: relative;
-    font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--border);
-    line-height: 1.55;
+  .warn {
+    background: rgba(255,124,92,0.07);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 14px 0;
+    font-size: 0.9rem;
+    color: #ffd0c4;
   }
-  .steps li:last-child { border-bottom: none; }
-  .steps li::before {
-    content: attr(data-n); position: absolute; left: 0; top: .55rem;
-    width: 20px; height: 20px; background: rgba(91,141,255,.15);
-    color: var(--accent); border-radius: 50%; font-size: 11px; font-weight: 600;
-    display: flex; align-items: center; justify-content: center;
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
     font-family: var(--mono);
   }
-  .steps li b { color: var(--text); font-weight: 500; }
+  th {
+    background: rgba(94,231,194,0.1);
+    color: var(--accent1);
+    font-weight: 500;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  tr:hover td { background: rgba(255,255,255,0.025); }
+  td.good { color: #5ee7c2; font-weight: 500; }
+  td.bad  { color: #ff7c5c; font-weight: 500; }
+
+  /* ── FLOW DIAGRAMS ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 18px 0;
+  }
+  .flow-step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--muted);
+    padding: 0 8px;
+    font-size: 1.1rem;
+  }
+
+  /* ── NORMAL FORMS LADDER ── */
+  .nf-ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+  }
+  .nf-row {
+    display: flex;
+    align-items: stretch;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    transition: transform .15s;
+  }
+  .nf-row:hover { transform: translateX(4px); }
+  .nf-label {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 16px 20px;
+    color: #fff;
+    min-width: 90px;
+    display: flex;
+    align-items: center;
+  }
+  .nf-content {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 20px;
+    flex: 1;
+  }
+  .nf-content p { font-size: 0.92rem; margin-bottom: 4px; }
+  .nf-content .rule { font-family: var(--mono); color: var(--accent1); font-size: 0.83rem; }
+  .nf-content .extra { color: var(--muted); font-size: 0.85rem; font-style: italic; }
+
+  /* ── ACID ── */
+  .acid-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .acid-card {
+    border-radius: 12px;
+    padding: 22px 20px;
+    border: 1px solid var(--border);
+  }
+  .acid-card .letter {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 2.4rem;
+    margin-bottom: 6px;
+  }
+  .acid-card h4 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--heading);
+  }
+  .acid-card p { font-size: 0.88rem; color: var(--text); }
+
+  /* ── STATE DIAGRAM ── */
+  .state-diagram {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+  }
+  .state-diagram svg { max-width: 100%; }
+
+  /* ── FD TYPES ── */
+  .fd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .fd-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .fd-card .tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent3);
+    background: rgba(167,139,250,0.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .fd-card h4 { font-family: var(--sans); font-weight: 600; font-size: 0.95rem; color: var(--heading); margin-bottom: 8px; }
+  .fd-card p { font-size: 0.88rem; color: var(--text); margin-bottom: 6px; }
+  .fd-card .example { font-family: var(--mono); font-size: 0.8rem; color: var(--accent1); background: rgba(94,231,194,0.07); padding: 8px 12px; border-radius: 6px; }
+
+  /* ── ANOMALY CARDS ── */
+  .anomaly-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .anomaly-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 22px;
+    border-top: 3px solid var(--accent2);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .anomaly-card h4 { font-family: var(--sans); font-weight: 700; color: var(--accent2); font-size: 1rem; margin-bottom: 10px; }
+  .anomaly-card p { font-size: 0.9rem; margin-bottom: 8px; }
+  .anomaly-card .memory { font-style: italic; color: var(--accent4); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 10px; }
+
+  /* ── CONCURRENCY PROBLEMS ── */
+  .conc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .conc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    border-top: 3px solid var(--accent3);
+  }
+  .conc-card h4 { font-family: var(--sans); font-weight: 600; color: var(--accent3); font-size: 0.93rem; margin-bottom: 8px; }
+  .conc-card p { font-size: 0.87rem; }
+
+  /* ── SCHEDULE TYPES ── */
+  .sch-tree {
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  /* ── LOCKING ── */
+  .lock-matrix td, .lock-matrix th { text-align: center; }
+
+  /* ── ARMSTRONG ── */
+  .axiom-list { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+  .axiom {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .axiom .num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent3);
+    background: rgba(167,139,250,0.1);
+    border-radius: 4px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .axiom .body h4 { font-family: var(--sans); font-weight: 600; color: var(--heading); font-size: 0.93rem; margin-bottom: 4px; }
+  .axiom .body p { font-size: 0.88rem; }
+  .axiom .body .formula { font-family: var(--mono); color: var(--accent1); font-size: 0.83rem; margin-top: 6px; }
+
+  /* ── 2PL ── */
+  .twophl { display: flex; gap: 16px; margin: 18px 0; flex-wrap: wrap; }
+  .phase-box { flex: 1; min-width: 180px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .phase-box h4 { font-family: var(--sans); font-weight: 600; font-size: 0.92rem; margin-bottom: 8px; }
+  .phase-box p { font-size: 0.87rem; }
+
+  /* ── QUIZ ── */
+  .quiz-box {
+    background: linear-gradient(135deg, rgba(167,139,250,0.07), rgba(167,139,250,0.02));
+    border: 1px solid rgba(167,139,250,0.25);
+    border-radius: 14px;
+    padding: 28px;
+    margin-top: 28px;
+  }
+  .quiz-box h3 { font-family: var(--sans); font-weight: 700; color: var(--accent3); margin-bottom: 20px; font-size: 1.1rem; }
+  .q-item { margin-bottom: 22px; }
+  .q-item .q { font-weight: 600; color: var(--heading); margin-bottom: 8px; font-family: var(--sans); font-size: 0.95rem; }
+  .q-item .a { display: none; background: rgba(94,231,194,0.06); border-left: 2px solid var(--accent1); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 0.88rem; color: var(--accent1); }
+  .q-item.open .a { display: block; }
+  .reveal-btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: color .2s, border-color .2s;
+  }
+  .reveal-btn:hover { color: var(--accent1); border-color: var(--accent1); }
+
+  /* ── SVG DIAGRAMS ── */
+  .diagram-container { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 18px 0; text-align: center; overflow-x: auto; }
+  .diagram-container svg { max-width: 100%; }
+
+  /* ── FOOTER ── */
+  footer { text-align: center; padding: 40px; color: var(--muted); font-family: var(--mono); font-size: 0.78rem; border-top: 1px solid var(--border); }
 
   /* ── SCROLLBAR ── */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  /* ── PROGRESS BAR ── */
-  .progress-wrap { display: flex; gap: 4px; margin-bottom: 1.5rem; }
-  .progress-seg {
-    height: 4px; flex: 1; border-radius: 2px;
-    background: var(--surface2);
-    transition: background .3s;
-  }
-  .progress-seg.done { background: linear-gradient(to right, var(--accent), var(--accent2)); }
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  section { animation: fadeUp 0.5s ease both; }
+  section:nth-child(1) { animation-delay: 0.05s; }
+  section:nth-child(2) { animation-delay: 0.1s; }
+  section:nth-child(3) { animation-delay: 0.15s; }
+  section:nth-child(4) { animation-delay: 0.2s; }
+  section:nth-child(5) { animation-delay: 0.25s; }
 
-  /* ── LOCK COMPAT TABLE ── */
-  .compat-grid {
-    display: grid; grid-template-columns: 80px 1fr 1fr;
-    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-    font-size: 13px; margin-bottom: 1.25rem;
-  }
-  .cg-cell {
-    padding: 10px 14px; border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border); text-align: center;
-  }
-  .cg-cell:nth-child(3n) { border-right: none; }
-  .cg-cell.head { background: var(--surface2); font-weight: 600; font-size: 12px; }
-  .cg-yes { color: var(--green); font-weight: 600; }
-  .cg-no  { color: var(--red);   font-weight: 600; }
+  /* divider */
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 32px 0; }
 
-  /* ── PRINT ── */
-  @media print {
-    .header { position: relative; }
-    .section { display: block !important; page-break-inside: avoid; }
-    body { background: white; color: #111; }
+  .tag-pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-right: 6px;
+    margin-bottom: 4px;
   }
+  .tag-green { background: rgba(94,231,194,0.12); color: var(--accent1); }
+  .tag-red   { background: rgba(255,124,92,0.12); color: var(--accent2); }
+  .tag-purple{ background: rgba(167,139,250,0.12); color: var(--accent3); }
+  .tag-yellow{ background: rgba(251,191,36,0.12); color: var(--accent4); }
+
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-inner">
-    <span class="logo">DBMS / M3</span>
-    <button class="nav-btn active" onclick="show('home')">Home</button>
-    <button class="nav-btn" onclick="show('anomalies')">Anomalies</button>
-    <button class="nav-btn" onclick="show('fd')">Func. Dependency</button>
-    <button class="nav-btn" onclick="show('nf')">Normal Forms</button>
-    <button class="nav-btn" onclick="show('txn')">Transactions</button>
-    <button class="nav-btn" onclick="show('acid')">ACID</button>
-    <button class="nav-btn" onclick="show('schedules')">Schedules</button>
-    <button class="nav-btn" onclick="show('locks')">Locking (2PL)</button>
-    <button class="nav-btn" onclick="show('recovery')">Recovery</button>
-    <button class="nav-btn" onclick="show('flash')">Flashcards</button>
-    <button class="nav-btn" onclick="show('exam')">Exam Qs</button>
-  </div>
+<header>
+  <div class="badge">DBMS · Module 3</div>
+  <h1>Database <span>Design & Transactions</span><br>Complete Study Guide</h1>
+  <p>Normalization · Functional Dependencies · Transactions · Concurrency · Recovery</p>
 </header>
 
-<main class="main">
+<nav>
+  <a href="#s1">Anomalies</a>
+  <a href="#s2">Func. Deps</a>
+  <a href="#s3">Armstrong's</a>
+  <a href="#s4">FD Types</a>
+  <a href="#s5">Normalization</a>
+  <a href="#s6">1NF</a>
+  <a href="#s7">2NF</a>
+  <a href="#s8">3NF</a>
+  <a href="#s9">BCNF</a>
+  <a href="#s10">Transactions</a>
+  <a href="#s11">ACID</a>
+  <a href="#s12">Concurrency</a>
+  <a href="#s13">Schedules</a>
+  <a href="#s14">Locking</a>
+  <a href="#s15">Recovery</a>
+</nav>
 
-<!-- HOME -->
-<div id="home" class="section active">
-  <div class="hero">
-    <div class="hero-tag">SJCET · DBMS · Module 3</div>
-    <h1>Your Complete<br>Exam Study Guide</h1>
-    <p>Everything from Anomalies to Recovery — explained simply and memorably.</p>
-  </div>
-  <div class="grid">
-    <div class="card" style="cursor:pointer" onclick="show('anomalies')">
-      <div class="badge b-red">01</div>
-      <div class="card-title">Anomalies & Redundancy</div>
-      <div class="card-body">Insertion, updation, deletion anomalies. Why they happen and how to fix them.</div>
-    </div>
-    <div class="card" style="cursor:pointer" onclick="show('fd')">
-      <div class="badge b-blue">02</div>
-      <div class="card-title">Functional Dependency</div>
-      <div class="card-body">X→Y, Armstrong's axioms, trivial/non-trivial/multivalued/transitive FDs.</div>
-    </div>
-    <div class="card" style="cursor:pointer" onclick="show('nf')">
-      <div class="badge b-green">03</div>
-      <div class="card-title">Normal Forms</div>
-      <div class="card-body">1NF → 2NF → 3NF → BCNF with rules, examples, and decomposition steps.</div>
-    </div>
-    <div class="card" style="cursor:pointer" onclick="show('txn')">
-      <div class="badge b-amber">04</div>
-      <div class="card-title">Transaction Processing</div>
-      <div class="card-body">States, operations, the 4 concurrency problems (essay topic — 4 marks).</div>
-    </div>
-    <div class="card" style="cursor:pointer" onclick="show('acid')">
-      <div class="badge b-purple">05</div>
-      <div class="card-title">ACID Properties</div>
-      <div class="card-body">Atomicity, Consistency, Isolation, Durability — with examples and memory tricks.</div>
-    </div>
-    <div class="card" style="cursor:pointer" onclick="show('schedules')">
-      <div class="badge b-teal">06</div>
-      <div class="card-title">Schedules & Serializability</div>
-      <div class="card-body">Serial, non-serial, conflict serializability, precedence graphs, recoverability.</div>
-    </div>
-    <div class="card" style="cursor:pointer" onclick="show('locks')">
-      <div class="badge b-pink">07</div>
-      <div class="card-title">Locking & 2PL</div>
-      <div class="card-body">Shared/Exclusive locks, Two-Phase Locking, Strict 2PL, Rigorous 2PL.</div>
-    </div>
-    <div class="card" style="cursor:pointer" onclick="show('recovery')">
-      <div class="badge b-blue">08</div>
-      <div class="card-title">Recovery</div>
-      <div class="card-body">System log, commit point, deferred vs immediate modification, checkpointing.</div>
-    </div>
-  </div>
-  <div class="grid">
-    <div class="card" style="cursor:pointer;border-color:rgba(91,141,255,.3)" onclick="show('flash')">
-      <div class="card-title" style="color:var(--accent)">🃏  20 Flashcards</div>
-      <div class="card-body">Tap-to-flip cards covering the most exam-likely definitions and concepts.</div>
-    </div>
-    <div class="card" style="cursor:pointer;border-color:rgba(251,191,36,.3)" onclick="show('exam')">
-      <div class="card-title" style="color:var(--amber)">📝  Exam Questions</div>
-      <div class="card-body">7 model answers to common exam questions including the 4-mark essay.</div>
-    </div>
-  </div>
-</div>
+<main>
 
-<!-- ANOMALIES -->
-<div id="anomalies" class="section">
-  <div class="sec-title">Anomalies &amp; Redundancy</div>
-  <div class="callout callout-info"><b>Core idea:</b> Poorly designed tables cause redundancy, which leads to anomalies. Normalization fixes this by splitting tables intelligently.</div>
-  <div class="grid">
-    <div class="card">
-      <div class="badge b-red">Redundancy</div>
-      <div class="card-title">Data Redundancy</div>
-      <div class="card-body">Same data stored in two or more places. Wastes space and causes inconsistency.<br><br><b>Row-level:</b> Same row repeated (fix: add primary key).<br><b>Column-level:</b> Columns repeat data across rows — leads to all three anomalies below.</div>
-    </div>
-    <div class="card">
-      <div class="badge b-amber">Insertion Anomaly</div>
-      <div class="card-title">Can't insert without related data</div>
-      <div class="card-body">A child cannot be inserted without the parent existing first.<br><br><b>Example:</b> Adding a student with dept_id = 6 fails because dept 6 doesn't exist yet.<br><br><b>Definition:</b> The inability to add data due to absence of other data.</div>
-    </div>
-    <div class="card">
-      <div class="badge b-amber">Updation Anomaly</div>
-      <div class="card-title">Update in one place, missed elsewhere</div>
-      <div class="card-body">Duplicated data updated in one row but not in all copies.<br><br><b>Example:</b> English dept changes to Dept_ID 8, but the Student table still shows the old ID.</div>
-    </div>
-    <div class="card">
-      <div class="badge b-amber">Deletion Anomaly</div>
-      <div class="card-title">Deleting causes unintended data loss</div>
-      <div class="card-body">Deleting one record accidentally removes other important information.<br><br><b>Example:</b> Deleting the "Computer Science" department also deletes all CS student records.</div>
+<!-- ════════════════════════ 1. ANOMALIES ════════════════════════ -->
+<section id="s1">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(255,124,92,0.15)">⚠️</div>
+    <div>
+      <div class="number">01 · Database Anomalies</div>
+      <h2>Redundancy & Anomalies</h2>
     </div>
   </div>
-  <div class="callout callout-warn"><b>Memory trick:</b> <b>I</b>nsert can't happen · <b>U</b>pdate only in one place · <b>D</b>elete removes too much → <b>I.U.D</b></div>
-</div>
 
-<!-- FUNCTIONAL DEPENDENCY -->
-<div id="fd" class="section">
-  <div class="sec-title">Functional Dependency</div>
-  <div class="callout callout-info"><b>Key idea:</b> X → Y means "knowing X, you always know Y." X is the determinant (LHS), Y is the dependent (RHS).</div>
-  <div class="grid grid-2">
-    <div class="card">
-      <div class="badge b-blue">Definition</div>
-      <div class="card-title">Functional Dependency X → Y</div>
-      <div class="card-body">The value of X <b>uniquely determines</b> the value of Y. If two rows have the same X, they must have the same Y.<br><br><b>Valid:</b> Ssn → Ename (one SSN → one employee name)<br><b>Valid:</b> {Ssn, Pnumber} → Hours<br><b>Valid:</b> dept_name → dept_building</div>
-    </div>
-    <div class="card">
-      <div class="badge b-green">Armstrong's Axioms (1974)</div>
-      <div class="card-title">3 Core Inference Rules</div>
-      <div class="card-body"><b>1. Reflexivity:</b> If Y ⊆ X, then X → Y<br>&nbsp;&nbsp;e.g. {roll, name} → name ✓<br><br><b>2. Augmentation:</b> If X→Y then XZ→YZ<br>&nbsp;&nbsp;e.g. roll→dept then {roll,name}→{dept,name} ✓<br><br><b>3. Transitivity:</b> If X→Y and Y→Z, then X→Z<br>&nbsp;&nbsp;e.g. roll→dept, dept→building → roll→building ✓</div>
-    </div>
+  <div class="card">
+    <h3>🗃️ What is Redundancy?</h3>
+    <p><strong>Data redundancy</strong> is when the same data is stored in more than one place. Two kinds exist:</p>
+    <ul>
+      <li><strong>Row-level redundancy</strong> — entire rows are duplicated. Fix: make a column the <em>Primary Key</em>.</li>
+      <li><strong>Column-level redundancy</strong> — derived / repeated values across columns. Leads to the 3 anomalies below.</li>
+    </ul>
   </div>
-  <div class="sub-title">Types of Functional Dependencies</div>
-  <div class="grid">
-    <div class="card">
-      <div class="badge b-purple">Trivial FD</div>
-      <div class="card-title">Y is a subset of X</div>
-      <div class="card-body">{roll, name} → name (trivial — name is already part of the left side).<br>Also: roll → roll.<br><br>These are always true and "obvious."</div>
-    </div>
-    <div class="card">
-      <div class="badge b-teal">Non-Trivial FD</div>
-      <div class="card-title">Y is NOT a subset of X</div>
-      <div class="card-body">roll → name (non-trivial — name is not part of roll).<br>{roll, name} → age (also non-trivial).<br><br>These are the meaningful, useful ones.</div>
-    </div>
-    <div class="card">
-      <div class="badge b-blue">Multivalued FD</div>
-      <div class="card-title">Dependents don't depend on each other</div>
-      <div class="card-body">roll → {name, age} is multivalued because name and age are <b>independent</b> (name→age doesn't hold, age→name doesn't hold).</div>
-    </div>
-    <div class="card">
-      <div class="badge b-amber">Transitive FD</div>
-      <div class="card-title">Indirect dependency via a third attribute</div>
-      <div class="card-body">If enrol→dept and dept→building, then enrol→building is transitive (indirect, through dept).<br><br>This is what 3NF eliminates!</div>
-    </div>
-  </div>
-  <div class="callout callout-warn"><b>Invalid FD Test:</b> If two rows have the <b>same LHS value</b> but <b>different RHS values</b> → the FD is INVALID.<br>Example: "xyz" appears as both CS and IT student → name→dept is invalid.</div>
-</div>
 
-<!-- NORMAL FORMS -->
-<div id="nf" class="section">
-  <div class="sec-title">Normal Forms</div>
-  <div class="callout callout-info"><b>Goal:</b> Each higher normal form eliminates one more type of problem. You must satisfy all lower NFs first. Invented by Edgar Codd (1NF–3NF), and extended with Boyce to create BCNF.</div>
-  <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Normal Form</th><th>Rule / Condition</th><th>What it eliminates</th><th>How to fix</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><span class="badge b-blue">1NF</span></td>
-          <td>All values must be <b>atomic</b> (single, indivisible). No multi-valued attributes. Primary key must exist.</td>
-          <td>Multi-valued columns (e.g., multiple movies in one cell)</td>
-          <td>Separate multi-valued attrs into new table OR expand rows OR create separate columns</td>
-        </tr>
-        <tr>
-          <td><span class="badge b-green">2NF</span></td>
-          <td>Must be in 1NF. Every <b>non-prime attribute</b> must be <b>fully functionally dependent</b> on the entire primary key.</td>
-          <td><b>Partial dependency</b> — non-key attr depends on only part of a composite key</td>
-          <td>Split: move partially dependent attr + its determinant into a new table</td>
-        </tr>
-        <tr>
-          <td><span class="badge b-teal">3NF</span></td>
-          <td>Must be in 2NF. No <b>transitive dependency</b>. NPA→NPA not allowed. (For every FD X→Y: X is superkey OR Y is prime attr)</td>
-          <td>Transitive dependency — non-prime depends on another non-prime</td>
-          <td>If X→Y is transitive: R1 = (X, X⁺) and R2 = (R − Y⁺)</td>
-        </tr>
-        <tr>
-          <td><span class="badge b-purple">BCNF</span></td>
-          <td>Must be in 3NF. For <b>every FD X→Y</b>, X must be a <b>superkey</b>. No exceptions, even for prime attrs.</td>
-          <td>Cases where a non-superkey determines a prime attribute</td>
-          <td>Decompose table so the LHS of every FD becomes a superkey</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="anomaly-grid">
+    <div class="anomaly-card">
+      <h4>➕ Insertion Anomaly</h4>
+      <p>You <strong>can't insert</strong> new data without including other (often unrelated) data.</p>
+      <p><em>Example:</em> Can't add a new student "Jerry" with Dept_ID 6 because no department 6 exists yet in the Department table.</p>
+      <div class="memory">🧠 Memory: "Can't add a child without a parent"</div>
+    </div>
+    <div class="anomaly-card">
+      <h4>✏️ Update Anomaly</h4>
+      <p>Duplicated data is <strong>updated in one place but not all</strong>, leaving inconsistent data.</p>
+      <p><em>Example:</em> English Dept_ID is changed to 8 in the Department table, but still shows as the old ID in the Student table.</p>
+      <div class="memory">🧠 Memory: "One copy updated, others forgotten"</div>
+    </div>
+    <div class="anomaly-card">
+      <h4>🗑️ Deletion Anomaly</h4>
+      <p>Deleting one record <strong>unintentionally destroys</strong> other needed data.</p>
+      <p><em>Example:</em> Deleting the Computer Science department also wipes out all CS students.</p>
+      <div class="memory">🧠 Memory: "Delete one thing, lose many things"</div>
+    </div>
   </div>
-  <div class="sub-title">Quick Test for Each Level</div>
-  <ul class="steps">
-    <li data-n="1"><b>1NF:</b> Any column with multiple values? Atomic? Primary key exists? → Fix if not.</li>
-    <li data-n="2"><b>2NF:</b> Does any non-key column depend on only PART of a composite key? → Partial dependency = fix.</li>
-    <li data-n="3"><b>3NF:</b> Does a non-key column depend on ANOTHER non-key column? → Transitive = fix.</li>
-    <li data-n="4"><b>BCNF:</b> Is the left side of EVERY FD a superkey? If not → fix.</li>
-  </ul>
-  <div class="callout callout-warn">
-    <b>3NF Decomposition Rule:</b> If game→feestructure is transitive (NPA→NPA):<br>
-    R1 = (game, feestructure) and R2 = (rollno, game)
-  </div>
-  <div class="callout callout-green">
-    <b>BCNF Example:</b> Student-Professor: professor→subject, but professor is not a superkey.<br>
-    Fix: Split into Student(student_id, professor) and Professor(professor, subject).
-  </div>
-</div>
+</section>
 
-<!-- TRANSACTIONS -->
-<div id="txn" class="section">
-  <div class="sec-title">Transaction Processing</div>
-  <div class="callout callout-info"><b>A transaction</b> is an atomic unit of work — either ALL operations succeed (commit) or NONE of them do (rollback). Boundaries: begin_transaction … end_transaction.</div>
-  <div class="grid grid-2">
-    <div class="card">
-      <div class="badge b-blue">Low-level Operations</div>
-      <div class="card-title">Inside a transaction</div>
-      <div class="card-body">
-        <b>begin_transaction</b> — marks the start<br>
-        <b>read_item(X)</b> — read X from DB to memory buffer<br>
-        <b>modify_item(X)</b> — change X in memory<br>
-        <b>write_item(X)</b> — write X from memory back to DB<br>
-        <b>commit</b> — permanently save all changes<br>
-        <b>rollback</b> — undo all changes since begin
+<!-- ════════════════════════ 2. FUNCTIONAL DEPENDENCIES ════════════════════════ -->
+<section id="s2">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(94,231,194,0.15)">🔗</div>
+    <div>
+      <div class="number">02 · Functional Dependencies</div>
+      <h2>Functional Dependencies (FD)</h2>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 Definition</h3>
+    <p>A <strong>Functional Dependency X → Y</strong> means: knowing the value of X <em>uniquely determines</em> the value of Y.</p>
+    <ul>
+      <li>X is the <strong>determinant</strong> (left-hand side)</li>
+      <li>Y is the <strong>dependent</strong> (right-hand side)</li>
+    </ul>
+    <div class="highlight">If two tuples have the same X value, they must have the same Y value.</div>
+  </div>
+
+  <div class="card">
+    <h3>✅ Valid FD Examples</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>FD</th><th>Why Valid?</th></tr></thead>
+        <tbody>
+          <tr><td>adm_no → {name, dept_name, dept_building}</td><td>Each admission number uniquely identifies one student's info</td></tr>
+          <tr><td>dept_name → dept_building</td><td>Each department name maps to exactly one building</td></tr>
+          <tr><td>Ssn → Ename</td><td>SSN uniquely identifies an employee name</td></tr>
+          <tr><td>{Ssn, Pnumber} → Hours</td><td>Combination determines hours worked on a project</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❌ Invalid FD Examples</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>FD</th><th>Why Invalid?</th></tr></thead>
+        <tbody>
+          <tr><td>name → dept_name</td><td>Two students can have same name but different departments (xyz=xyz, but CS≠IT)</td></tr>
+          <tr><td>dept_building → dept_name</td><td>Multiple departments can share one building (B2 has both EC and ME)</td></tr>
+          <tr><td>name → adm_no</td><td>Two students can share a name but have different admission numbers</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 3. ARMSTRONG'S AXIOMS ════════════════════════ -->
+<section id="s3">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(167,139,250,0.15)">⚙️</div>
+    <div>
+      <div class="number">03 · Inference Rules</div>
+      <h2>Armstrong's Axioms</h2>
+    </div>
+  </div>
+  <div class="card">
+    <p>Developed by <strong>William W. Armstrong (1974)</strong>. These rules let you derive new FDs from existing ones.</p>
+  </div>
+  <div class="axiom-list">
+    <div class="axiom">
+      <span class="num">Rule 1</span>
+      <div class="body">
+        <h4>Reflexivity</h4>
+        <p>If Y is a subset of X, then X → Y always holds.</p>
+        <div class="formula">{roll_no, name} → name &nbsp;✓ &nbsp; (name is a subset of {roll_no, name})</div>
       </div>
     </div>
-    <div class="card">
-      <div class="badge b-green">Transaction States</div>
-      <div class="card-title">Life cycle of a transaction</div>
-      <div class="card-body">
-        <b>1. Active</b> — executing READ/WRITE ops<br>
-        <b>2. Partially committed</b> — all operations done, not yet confirmed<br>
-        <b>3. Committed</b> — permanently recorded in DB<br>
-        <b>4. Failed</b> — error or abort detected<br>
-        <b>5. Aborted</b> — rolled back, DB restored to before<br>
-        <b>6. Terminated</b> — left the system
+    <div class="axiom">
+      <span class="num">Rule 2</span>
+      <div class="body">
+        <h4>Augmentation</h4>
+        <p>If X → Y is valid, then adding the same attribute Z to both sides keeps it valid: XZ → YZ.</p>
+        <div class="formula">If {roll_no, name} → dept_building, then {roll_no, name, dept_name} → {dept_building, dept_name} &nbsp;✓</div>
+      </div>
+    </div>
+    <div class="axiom">
+      <span class="num">Rule 3</span>
+      <div class="body">
+        <h4>Transitivity</h4>
+        <p>If X → Y and Y → Z, then X → Z (chain rule).</p>
+        <div class="formula">roll_no → dept_name &amp;&amp; dept_name → dept_building ⟹ roll_no → dept_building &nbsp;✓</div>
       </div>
     </div>
   </div>
+  <div class="highlight">💡 These 3 axioms are <em>sound</em> (never produce wrong FDs) and <em>complete</em> (can derive all valid FDs).</div>
+</section>
 
-  <div class="sub-title">⚠ Concurrency Problems — 4-mark Essay Topic</div>
-  <div class="callout callout-warn"><b>When multiple transactions run concurrently without control, 4 problems can occur:</b></div>
-  <div class="grid">
-    <div class="card">
-      <div class="badge b-red">1. Lost Update</div>
-      <div class="card-title">One write overwrites another</div>
-      <div class="card-body">
-        T1 reads X=100, T2 reads X=100.<br>
-        T1 deducts 50 → writes X=50.<br>
-        T2 adds 10 → writes X=110 (based on old read of 100).<br><br>
-        <b>T1's update is LOST.</b> Correct value should be 60.
-      </div>
-    </div>
-    <div class="card">
-      <div class="badge b-amber">2. Dirty Read</div>
-      <div class="card-title">Read uncommitted/invalid data</div>
-      <div class="card-body">
-        T1 writes X=50 (from 100). Not committed yet.<br>
-        T2 reads X=50 and uses it.<br>
-        T1 FAILS and rolls back → X=100 again.<br><br>
-        <b>T2 worked with a value that never really existed.</b>
-      </div>
-    </div>
-    <div class="card">
-      <div class="badge b-purple">3. Incorrect Summary</div>
-      <div class="card-title">Aggregate reads mix old and new</div>
-      <div class="card-body">
-        T2 computes SUM of all records while T1 is updating them.<br>
-        Some values read before update, some after.<br><br>
-        <b>The aggregate result is wrong</b> — a mix of old and new values.
-      </div>
-    </div>
-    <div class="card">
-      <div class="badge b-teal">4. Unrepeatable Read</div>
-      <div class="card-title">Same read returns different values</div>
-      <div class="card-body">
-        T2 reads X=100.<br>
-        T1 updates X to 200.<br>
-        T2 reads X again and gets 200.<br><br>
-        <b>Same transaction, same item, two different values</b> — unrepeatable.
-      </div>
+<!-- ════════════════════════ 4. TYPES OF FDs ════════════════════════ -->
+<section id="s4">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(251,191,36,0.15)">🏷️</div>
+    <div>
+      <div class="number">04 · FD Classification</div>
+      <h2>Types of Functional Dependencies</h2>
     </div>
   </div>
-  <div class="sub-title">Why Recovery is Needed (3-mark question)</div>
-  <div class="grid">
-    <div class="card"><div class="badge b-red">System crash</div><div class="card-body">Hardware, software, or network error during execution.</div></div>
-    <div class="card"><div class="badge b-amber">Transaction error</div><div class="card-body">Integer overflow, division by zero, wrong parameter values, logical errors.</div></div>
-    <div class="card"><div class="badge b-purple">Local errors</div><div class="card-body">Insufficient account balance or other business rule violation triggers cancel.</div></div>
-    <div class="card"><div class="badge b-teal">Disk failure</div><div class="card-body">Head crash or malfunction causes data loss during read/write.</div></div>
-    <div class="card"><div class="badge b-pink">Catastrophe</div><div class="card-body">Power failure, fire, theft, wrong tape, sabotage, accidental overwrite.</div></div>
+  <div class="fd-grid">
+    <div class="fd-card">
+      <span class="tag">Trivial</span>
+      <h4>Trivial FD</h4>
+      <p>The dependent (Y) is a <strong>subset of</strong> the determinant (X). Always true — trivially.</p>
+      <div class="example">{roll_no, name} → name<br>roll_no → roll_no</div>
+    </div>
+    <div class="fd-card">
+      <span class="tag">Non-Trivial</span>
+      <h4>Non-Trivial FD</h4>
+      <p>Y is <strong>NOT a subset</strong> of X. These carry real information.</p>
+      <div class="example">roll_no → name<br>{roll_no, name} → age</div>
+    </div>
+    <div class="fd-card">
+      <span class="tag">Multivalued</span>
+      <h4>Multivalued FD</h4>
+      <p>a → {b, c} where b and c are <strong>independent of each other</strong>.</p>
+      <div class="example">roll_no → {name, age}<br>(name and age don't depend on each other)</div>
+    </div>
+    <div class="fd-card">
+      <span class="tag">Transitive</span>
+      <h4>Transitive FD</h4>
+      <p>Indirect dependency: a → b and b → c, so a → c <strong>indirectly</strong>.</p>
+      <div class="example">enrol_no → dept<br>dept → building_no<br>∴ enrol_no → building_no</div>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- ACID -->
-<div id="acid" class="section">
-  <div class="sec-title">ACID Properties</div>
-  <div class="callout callout-info"><b>ACID</b> properties ensure database integrity during transaction processing. These 4 properties together guarantee reliable transactions.</div>
-  <div class="grid">
-    <div class="card">
-      <div class="badge b-red">A — Atomicity</div>
-      <div class="card-title">"All or Nothing"</div>
-      <div class="card-body">
-        Either the <b>ENTIRE transaction</b> executes or <b>NONE</b> of it does.<br>No partial execution allowed.<br><br>
-        <b>Example:</b> Transfer ₹100 from X to Y.<br>
-        If debit from X succeeds but credit to Y fails → entire transaction is rolled back.<br><br>
-        Two operations: <b>Abort</b> (changes not visible) and <b>Commit</b> (changes visible).
+<!-- ════════════════════════ 5. NORMALIZATION OVERVIEW ════════════════════════ -->
+<section id="s5">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(94,231,194,0.15)">🧹</div>
+    <div>
+      <div class="number">05 · Normalization Overview</div>
+      <h2>What is Normalization?</h2>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📖 Core Idea</h3>
+    <p>Normalization is the process of <strong>organizing a database to reduce redundancy and avoid anomalies</strong> by splitting large tables into smaller, well-structured ones linked by relationships.</p>
+    <p style="margin-top:10px">Proposed by <strong>Edgar Codd</strong> (1NF, 2NF, 3NF). BCNF developed with <strong>Raymond F. Boyce</strong>.</p>
+  </div>
+
+  <div class="nf-ladder">
+    <div class="nf-row">
+      <div class="nf-label" style="background:#ef4444">1NF</div>
+      <div class="nf-content">
+        <p class="rule">No multi-valued attributes · All values are atomic · Primary key exists</p>
+        <p class="extra">Eliminate repeating groups</p>
       </div>
     </div>
-    <div class="card">
-      <div class="badge b-green">C — Consistency</div>
-      <div class="card-title">Database stays valid before and after</div>
-      <div class="card-body">
-        Integrity constraints must hold before AND after every transaction.<br><br>
-        <b>Example:</b> Money transfer:<br>
-        Before: 500 + 200 = 700<br>
-        After: 400 + 300 = 700<br><br>
-        Total is preserved → <b>consistent!</b> If T1 completes but T2 fails → inconsistent.
+    <div class="nf-row">
+      <div class="nf-label" style="background:#f97316">2NF</div>
+      <div class="nf-content">
+        <p class="rule">In 1NF + No partial dependencies (non-prime attributes must depend on the FULL primary key)</p>
+        <p class="extra">Eliminate partial dependencies</p>
       </div>
     </div>
-    <div class="card">
-      <div class="badge b-blue">I — Isolation</div>
-      <div class="card-title">Transactions don't interfere with each other</div>
-      <div class="card-body">
-        Each transaction runs as if it is the <b>only one</b> in the system.<br>
-        Intermediate results are hidden from other transactions.<br><br>
-        Multiple transactions may run concurrently, but each must be unaware of others.<br><br>
-        Achieved using locks or concurrency control protocols.
+    <div class="nf-row">
+      <div class="nf-label" style="background:#eab308">3NF</div>
+      <div class="nf-content">
+        <p class="rule">In 2NF + No transitive dependencies (NPA → NPA not allowed)</p>
+        <p class="extra">Eliminate transitive dependencies</p>
       </div>
     </div>
-    <div class="card">
-      <div class="badge b-purple">D — Durability</div>
-      <div class="card-title">Committed = permanent, even after crash</div>
-      <div class="card-body">
-        Once committed, changes survive even if the system crashes or restarts.<br><br>
-        If the system fails <i>after</i> commit but <i>before</i> writing to disk → data is recovered when the system restarts.<br><br>
-        Achieved using: <b>mirrored disks</b>, <b>backup operations</b>, and <b>log files</b>.
+    <div class="nf-row">
+      <div class="nf-label" style="background:#22c55e">BCNF</div>
+      <div class="nf-content">
+        <p class="rule">In 3NF + For every FD X → Y, X must be a SUPER KEY</p>
+        <p class="extra">Stricter than 3NF — eliminates remaining anomalies</p>
       </div>
     </div>
   </div>
-  <div class="callout callout-warn"><b>Memory trick:</b> <b>A</b>ll or nothing · <b>C</b>orrect always · <b>I</b>solated completely · <b>D</b>urable forever → ACID</div>
-</div>
+</section>
 
-<!-- SCHEDULES -->
-<div id="schedules" class="section">
-  <div class="sec-title">Schedules &amp; Serializability</div>
-  <div class="callout callout-info"><b>Schedule:</b> An ordering of operations from n transactions. Goal: produce the same result as some serial execution (even if operations are interleaved).</div>
-  <div class="grid">
-    <div class="card">
-      <div class="badge b-green">Serial Schedule</div>
-      <div class="card-title">One transaction at a time</div>
-      <div class="card-body">T1 completes fully, then T2 starts. No interleaving. Always produces correct result. But slow — no parallelism.</div>
+<!-- ════════════════════════ 6. 1NF ════════════════════════ -->
+<section id="s6">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(239,68,68,0.15)">1️⃣</div>
+    <div>
+      <div class="number">06 · First Normal Form</div>
+      <h2>1NF — First Normal Form</h2>
     </div>
-    <div class="card">
-      <div class="badge b-amber">Non-Serial Schedule</div>
-      <div class="card-title">Operations interleaved</div>
-      <div class="card-body">Operations from different transactions mixed. Faster. May or may not be correct — need to test for serializability.</div>
+  </div>
+  <div class="card">
+    <h3>Rules to achieve 1NF</h3>
+    <ul>
+      <li>Each column must have <strong>atomic (single, indivisible) values</strong></li>
+      <li>No multi-valued attributes (no lists in a cell)</li>
+      <li>A <strong>primary key</strong> must exist</li>
+      <li>Each record must be unique</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>3 Methods to Fix a Violation</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>How</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Method 1 ⭐ (Best)</strong></td><td>Move multi-valued attribute to a separate table, carry primary key</td><td>DEPTS + DEPT_LOCATIONS</td></tr>
+          <tr><td>Method 2</td><td>Expand the key — create one row per value</td><td>Can cause row redundancy</td></tr>
+          <tr><td>Method 3</td><td>Create separate columns for each possible value (Dlocations1, Dlocations2…)</td><td>Wastes space with NULLs</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="card">
-      <div class="badge b-teal">Serializable Schedule</div>
-      <div class="card-title">Non-serial but produces serial result</div>
-      <div class="card-body">A non-serial schedule that produces the same result as some serial schedule. Two types: <b>Conflict Serializable</b> and <b>View Serializable</b>.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 7. 2NF ════════════════════════ -->
+<section id="s7">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(249,115,22,0.15)">2️⃣</div>
+    <div>
+      <div class="number">07 · Second Normal Form</div>
+      <h2>2NF — Second Normal Form</h2>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Key Definitions</h3>
+    <ul>
+      <li><strong>Prime attribute</strong> — part of the primary key</li>
+      <li><strong>Non-prime attribute</strong> — NOT part of the primary key</li>
+      <li><strong>Partial dependency</strong> — a non-prime attribute depends on only <em>part</em> of a composite key (NOT allowed in 2NF)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Example: Student_Project Table</h3>
+    <p>Primary key: <span class="tag-pill tag-yellow">{Stu_ID, Proj_ID}</span></p>
+    <p>Problem: Stu_Name depends only on Stu_ID (partial), Proj_Name depends only on Proj_ID (partial).</p>
+    <div class="warn">⚠️ Partial dependency exists → NOT in 2NF</div>
+    <p style="margin-top:12px"><strong>Fix:</strong> Decompose into three tables:</p>
+    <ul>
+      <li>Student(Stu_ID, Stu_Name)</li>
+      <li>Project(Proj_ID, Proj_Name)</li>
+      <li>Student_Project(Stu_ID, Proj_ID, Hours) — only the composite key attribute stays</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════ 8. 3NF ════════════════════════ -->
+<section id="s8">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(234,179,8,0.15)">3️⃣</div>
+    <div>
+      <div class="number">08 · Third Normal Form</div>
+      <h2>3NF — Third Normal Form</h2>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Two Equivalent Definitions</h3>
+    <p><strong>Definition 1:</strong> In 2NF + no transitive dependency between non-prime attributes (NPA → NPA is forbidden).</p>
+    <p style="margin-top:8px"><strong>Definition 2:</strong> For every non-trivial FD X → Y, either:</p>
+    <ul>
+      <li>X is a <em>super key</em>, OR</li>
+      <li>Y is a <em>prime attribute</em></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Classic Example — Student Table</h3>
+    <p>FDs: <code style="color:var(--accent1)">rollno → game, rollno → feestructure, game → feestructure</code></p>
+    <div class="warn">⚠️ game → feestructure is a transitive dependency (NPA → NPA) → NOT in 3NF</div>
+    <p style="margin-top:10px"><strong>Fix rule:</strong> If X→Y is a transitive dependency, split into R1(X⁺) and R2(R − Y⁺).</p>
+    <ul>
+      <li>R1: (game, feestructure)</li>
+      <li>R2: (rollno, game)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Another Example — STUDENT Table</h3>
+    <p>FDs: <code style="color:var(--accent1)">STUD_NO → STUD_STATE, STUD_STATE → STUD_COUNTRY</code></p>
+    <p>So STUD_COUNTRY is <em>transitively dependent</em> on STUD_NO. Solution:</p>
+    <ul>
+      <li>STUDENT(STUD_NO, STUD_NAME, STUD_STATE, STUD_AGE)</li>
+      <li>STATE_COUNTRY(STUD_STATE, STUD_COUNTRY)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════ 9. BCNF ════════════════════════ -->
+<section id="s9">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(34,197,94,0.15)">🏆</div>
+    <div>
+      <div class="number">09 · Boyce-Codd Normal Form</div>
+      <h2>BCNF</h2>
+    </div>
+  </div>
+  <div class="card">
+    <h3>The Single Rule</h3>
+    <p>For <em>every</em> non-trivial FD X → Y, <strong>X must be a super key</strong>.</p>
+    <div class="highlight">BCNF is stricter than 3NF. 3NF allows Y to be a prime attribute; BCNF does NOT.</div>
+  </div>
+  <div class="card">
+    <h3>Classic BCNF Violation Example</h3>
+    <p>Table: (student_id, subject, professor)</p>
+    <p>Rules: One professor teaches one subject. One subject can have multiple professors.</p>
+    <p>FDs: <code style="color:var(--accent1)">{student_id, subject} → professor</code> and <code style="color:var(--accent1)">professor → subject</code></p>
+    <div class="warn">⚠️ professor → subject, but "professor" is NOT a super key → Violates BCNF</div>
+    <p style="margin-top:10px"><strong>Fix:</strong> Decompose into:</p>
+    <ul>
+      <li>Student(student_id, professor_id)</li>
+      <li>Professor(professor_id, subject)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>3NF vs BCNF — Key Difference</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>3NF</th><th>BCNF</th></tr></thead>
+        <tbody>
+          <tr><td>Eliminates transitive deps</td><td class="good">Yes</td><td class="good">Yes</td></tr>
+          <tr><td>X must be superkey for every FD</td><td class="bad">No (Y can be prime)</td><td class="good">Yes — always</td></tr>
+          <tr><td>Strictness</td><td>Less strict</td><td>More strict</td></tr>
+          <tr><td>Always lossless decomposition</td><td class="good">Yes</td><td class="bad">Not always</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 10. TRANSACTIONS ════════════════════════ -->
+<section id="s10">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(94,231,194,0.15)">💳</div>
+    <div>
+      <div class="number">10 · Transaction Processing</div>
+      <h2>Transactions</h2>
+    </div>
+  </div>
+  <div class="card">
+    <h3>What is a Transaction?</h3>
+    <p>An <strong>atomic unit of work</strong> in a DBMS — either ALL operations complete successfully, or NONE of them take effect.</p>
+    <p style="margin-top:8px">Operations include: read, write, insert, delete, update.</p>
+  </div>
+  <div class="card">
+    <h3>Low-Level Transaction Operations</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Operation</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>begin_transaction</code></td><td>Marks the start of a transaction</td></tr>
+          <tr><td><code>read_item(X)</code></td><td>Reads value of X from database into main memory buffer</td></tr>
+          <tr><td><code>modify_item(X)</code></td><td>Changes the value in main memory buffer</td></tr>
+          <tr><td><code>write_item(X)</code></td><td>Writes modified value from buffer back to database</td></tr>
+          <tr><td><code>end_transaction</code></td><td>Marks end of transaction</td></tr>
+          <tr><td><code>commit</code></td><td>Transaction succeeded — changes permanently recorded</td></tr>
+          <tr><td><code>rollback</code></td><td>Transaction failed — all temporary changes are undone</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <div class="sub-title">Conflict Serializability — Precedence Graph Method</div>
-  <div class="callout callout-warn">
-    <b>Two operations CONFLICT if all 3 conditions hold:</b><br>
-    1. They belong to <b>different transactions</b><br>
-    2. They access the <b>same data item</b><br>
-    3. At least <b>one is a WRITE</b><br><br>
-    Conflict pairs: R-W, W-R, W-W on same item. &nbsp;(R-R is NEVER a conflict)
-  </div>
-  <div class="sub-title">Algorithm — Precedence Graph</div>
-  <ul class="steps">
-    <li data-n="1">Create one <b>node</b> per transaction in the schedule.</li>
-    <li data-n="2">If Ti <b>writes X</b>, then Tj <b>reads X</b> → draw edge <b>Ti → Tj</b></li>
-    <li data-n="3">If Ti <b>reads X</b>, then Tj <b>writes X</b> → draw edge <b>Ti → Tj</b></li>
-    <li data-n="4">If Ti <b>writes X</b>, then Tj <b>writes X</b> → draw edge <b>Ti → Tj</b></li>
-    <li data-n="5">If the graph has <b>NO CYCLE</b> → schedule is <b>Conflict Serializable ✓</b><br>If there IS a cycle → NOT conflict serializable.</li>
-    <li data-n="6">Serialized order = <b>Topological Sort</b> (process nodes with indegree 0 first).</li>
-  </ul>
+  <!-- Transaction State Diagram -->
+  <div class="diagram-container">
+    <p style="font-family:var(--mono);font-size:0.78rem;color:var(--muted);margin-bottom:14px;">Transaction State Diagram</p>
+    <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5ee7c2"/>
+        </marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#ff7c5c"/>
+        </marker>
+      </defs>
+      <!-- States -->
+      <rect x="10" y="80" width="100" height="40" rx="8" fill="#1a1e2a" stroke="#252a38"/>
+      <text x="60" y="105" text-anchor="middle" fill="#e8eaf0" font-family="DM Mono,monospace" font-size="11">Active</text>
 
-  <div class="sub-title">View Serializability — 3 Conditions</div>
-  <div class="grid">
-    <div class="card"><div class="badge b-blue">1. Initial Read</div><div class="card-body">If Ti reads X first in S1, then Ti must also read X first in S2.</div></div>
-    <div class="card"><div class="badge b-green">2. Updated Read</div><div class="card-body">If Ti reads X that was written by Tj in S1, then Ti must also read X written by Tj in S2.</div></div>
-    <div class="card"><div class="badge b-purple">3. Final Write</div><div class="card-body">If Ti does the last write on X in S1, then Ti must also do the last write on X in S2.</div></div>
-  </div>
+      <rect x="160" y="80" width="100" height="40" rx="8" fill="#1a1e2a" stroke="#252a38"/>
+      <text x="210" y="98" text-anchor="middle" fill="#e8eaf0" font-family="DM Mono,monospace" font-size="11">Partially</text>
+      <text x="210" y="112" text-anchor="middle" fill="#e8eaf0" font-family="DM Mono,monospace" font-size="11">Committed</text>
 
-  <div class="sub-title">Recoverability Types</div>
-  <div class="grid">
-    <div class="card">
-      <div class="badge b-green">Recoverable</div>
-      <div class="card-title">Tj commits after Ti (if Tj read Ti's write)</div>
-      <div class="card-body">If T2 reads data written by T1, T1 must <b>commit before</b> T2 commits.</div>
-    </div>
-    <div class="card">
-      <div class="badge b-red">Irrecoverable</div>
-      <div class="card-title">Tj commits before Ti — VERY BAD</div>
-      <div class="card-body">T2 reads T1's uncommitted data and commits. T1 then fails. T2 can't be undone. System is in an unrecoverable state.</div>
-    </div>
-    <div class="card">
-      <div class="badge b-amber">Cascading Rollback</div>
-      <div class="card-title">One failure = chain of rollbacks</div>
-      <div class="card-body">T10 fails → T11 (read T10's data) must rollback → T12 (read T11's data) must rollback. Single failure causes cascading effect.</div>
-    </div>
-    <div class="card">
-      <div class="badge b-teal">Cascadeless</div>
-      <div class="card-title">Only read COMMITTED data</div>
-      <div class="card-body">Tj reads X only after Ti (who wrote X) has <b>committed</b>. Ti's commit appears before Tj's read. No cascading rollbacks possible.</div>
-    </div>
-    <div class="card">
-      <div class="badge b-purple">Strict Schedule</div>
-      <div class="card-title">Cannot read OR write until writer commits</div>
-      <div class="card-body">No transaction can read or write X until the last transaction that wrote X has committed or aborted. Strictest form.</div>
-    </div>
-  </div>
-</div>
+      <rect x="310" y="20" width="100" height="40" rx="8" fill="#1a1e2a" stroke="#22c55e"/>
+      <text x="360" y="45" text-anchor="middle" fill="#22c55e" font-family="DM Mono,monospace" font-size="11">Committed</text>
 
-<!-- LOCKING -->
-<div id="locks" class="section">
-  <div class="sec-title">Locking &amp; Two-Phase Locking</div>
-  <div class="callout callout-info"><b>Locking protocols</b> are concurrency control mechanisms. A Lock Manager handles lock requests via message passing between transactions.</div>
-  <div class="grid">
-    <div class="card">
-      <div class="badge b-blue">Shared Lock (S)</div>
-      <div class="card-title">Read-only lock</div>
-      <div class="card-body">Multiple transactions can hold an S-lock on the same item simultaneously.<br><br>Used for <b>READ</b> operations. Cannot modify data while holding S-lock.<br>Requested with: <code>lock-S(X)</code></div>
-    </div>
-    <div class="card">
-      <div class="badge b-red">Exclusive Lock (X)</div>
-      <div class="card-title">Read + Write lock</div>
-      <div class="card-body">Only ONE transaction can hold X-lock. No other lock (S or X) allowed on same item simultaneously.<br><br>Used for <b>WRITE</b> operations.<br>Requested with: <code>lock-X(X)</code></div>
+      <rect x="310" y="140" width="100" height="40" rx="8" fill="#1a1e2a" stroke="#ef4444"/>
+      <text x="360" y="165" text-anchor="middle" fill="#ef4444" font-family="DM Mono,monospace" font-size="11">Failed</text>
+
+      <rect x="470" y="140" width="100" height="40" rx="8" fill="#1a1e2a" stroke="#252a38"/>
+      <text x="520" y="165" text-anchor="middle" fill="#e8eaf0" font-family="DM Mono,monospace" font-size="11">Aborted</text>
+
+      <rect x="610" y="80" width="100" height="40" rx="8" fill="#1a1e2a" stroke="#a78bfa"/>
+      <text x="660" y="105" text-anchor="middle" fill="#a78bfa" font-family="DM Mono,monospace" font-size="11">Terminated</text>
+
+      <!-- Arrows -->
+      <line x1="110" y1="100" x2="158" y2="100" stroke="#5ee7c2" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="260" y1="90" x2="308" y2="50" stroke="#5ee7c2" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="260" y1="110" x2="308" y2="150" stroke="#ff7c5c" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="135" y1="100" x2="135" y2="160" stroke="#ff7c5c" stroke-width="1.5"/>
+      <line x1="135" y1="160" x2="308" y2="160" stroke="#ff7c5c" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="410" y1="160" x2="468" y2="160" stroke="#ff7c5c" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="410" y1="40" x2="640" y2="80" stroke="#5ee7c2" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="570" y1="160" x2="650" y2="120" stroke="#5ee7c2" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- Labels -->
+      <text x="130" y="93" fill="#8892a4" font-family="DM Mono,monospace" font-size="9">R/W ops</text>
+      <text x="271" y="66" fill="#5ee7c2" font-family="DM Mono,monospace" font-size="9">success</text>
+      <text x="261" y="138" fill="#ff7c5c" font-family="DM Mono,monospace" font-size="9">fail</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════════════════════ 11. ACID ════════════════════════ -->
+<section id="s11">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(251,191,36,0.15)">⚗️</div>
+    <div>
+      <div class="number">11 · ACID Properties</div>
+      <h2>ACID Properties</h2>
     </div>
   </div>
-
-  <div class="sub-title">Lock Compatibility Matrix</div>
-  <div class="compat-grid">
-    <div class="cg-cell head">Request →</div>
-    <div class="cg-cell head">S (Shared)</div>
-    <div class="cg-cell head">X (Exclusive)</div>
-    <div class="cg-cell head">S (Shared)</div>
-    <div class="cg-cell cg-yes">✓ Compatible</div>
-    <div class="cg-cell cg-no">✗ Not compatible</div>
-    <div class="cg-cell head">X (Exclusive)</div>
-    <div class="cg-cell cg-no">✗ Not compatible</div>
-    <div class="cg-cell cg-no">✗ Not compatible</div>
-  </div>
-  <div class="callout callout-warn">Only S-S is compatible. Everything involving X is incompatible.</div>
-
-  <div class="sub-title">Two-Phase Locking (2PL)</div>
-  <div class="callout callout-info"><b>Rule:</b> Once a transaction releases ANY lock, it cannot acquire NEW locks. There are exactly two phases.</div>
-  <div class="grid">
-    <div class="card">
-      <div class="badge b-green">Phase 1: Growing</div>
-      <div class="card-title">Acquire all locks needed</div>
-      <div class="card-body">Transaction can acquire locks. Cannot release any. The point where ALL needed locks are held = <b>Lock Point</b>. After lock point → shrinking phase begins.</div>
+  <div class="acid-grid">
+    <div class="acid-card" style="background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.25)">
+      <div class="letter" style="color:#ef4444">A</div>
+      <h4>Atomicity</h4>
+      <p>All or nothing — the entire transaction completes or none of it does. Also called the "All or Nothing rule".</p>
+      <p style="margin-top:8px;font-style:italic;font-size:0.83rem;color:var(--muted)">Abort: changes not visible. Commit: changes visible.</p>
     </div>
-    <div class="card">
-      <div class="badge b-amber">Phase 2: Shrinking</div>
-      <div class="card-title">Release locks — NO new locks!</div>
-      <div class="card-body">After first unlock, <b>no new locks can be acquired</b>. Only releasing from here until transaction ends.<br><br>YOU CANNOT ACQUIRE A LOCK AFTER UNLOCK in 2PL.</div>
+    <div class="acid-card" style="background:rgba(234,179,8,0.07);border-color:rgba(234,179,8,0.25)">
+      <div class="letter" style="color:#eab308">C</div>
+      <h4>Consistency</h4>
+      <p>Database must remain in a valid state before and after the transaction. Integrity constraints are maintained.</p>
+      <p style="margin-top:8px;font-size:0.83rem;color:var(--muted)">Total before = Total after (e.g. 500+200=700 before, 400+300=700 after)</p>
+    </div>
+    <div class="acid-card" style="background:rgba(59,130,246,0.07);border-color:rgba(59,130,246,0.25)">
+      <div class="letter" style="color:#3b82f6">I</div>
+      <h4>Isolation</h4>
+      <p>Concurrent transactions execute as if they were serial. Intermediate results hidden from other transactions.</p>
+      <p style="margin-top:8px;font-size:0.83rem;color:var(--muted)">Changes only visible after commit.</p>
+    </div>
+    <div class="acid-card" style="background:rgba(34,197,94,0.07);border-color:rgba(34,197,94,0.25)">
+      <div class="letter" style="color:#22c55e">D</div>
+      <h4>Durability</h4>
+      <p>Once committed, data remains permanently — even after system crash or restart. Uses mirrored disks / backups.</p>
     </div>
   </div>
+</section>
 
-  <div class="sub-title">Variants of 2PL</div>
-  <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Type</th><th>Rule</th><th>Advantage</th></tr></thead>
-      <tbody>
-        <tr><td><span class="badge b-blue">Basic 2PL</span></td><td>Standard growing + shrinking phases</td><td>Ensures serializability</td></tr>
-        <tr><td><span class="badge b-green">Strict 2PL</span></td><td>Must satisfy 2PL + hold all <b>X-locks</b> until commit/abort</td><td>Recoverable + Cascadeless</td></tr>
-        <tr><td><span class="badge b-purple">Rigorous 2PL</span></td><td>Must satisfy 2PL + hold ALL locks (S + X) until commit/abort</td><td>Recoverable + Cascadeless + easier to implement</td></tr>
-      </tbody>
-    </table>
+<!-- ════════════════════════ 12. CONCURRENCY PROBLEMS ════════════════════════ -->
+<section id="s12">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(255,124,92,0.15)">🔀</div>
+    <div>
+      <div class="number">12 · Concurrency Problems</div>
+      <h2>Why Concurrency Control Is Needed</h2>
+    </div>
+  </div>
+  <div class="card">
+    <p>When multiple transactions run concurrently without control, 4 problems can arise:</p>
+  </div>
+  <div class="conc-grid">
+    <div class="conc-card">
+      <h4>1. Lost Update Problem</h4>
+      <p>T1 and T2 both read X=100. T1 computes X-50=50, T2 computes X+10=110. T2 writes 110 last — T1's update ($50) is <strong>lost</strong>.</p>
+    </div>
+    <div class="conc-card">
+      <h4>2. Dirty Read (Temporary Update)</h4>
+      <p>T1 writes X=50 (uncommitted). T2 reads X=50. T1 then <strong>fails and rolls back</strong> — T2 used invalid data.</p>
+    </div>
+    <div class="conc-card">
+      <h4>3. Incorrect Summary</h4>
+      <p>T2 calculates SUM while T1 is updating records. T2 reads some <strong>old values and some new</strong>, producing a wrong aggregate.</p>
+    </div>
+    <div class="conc-card">
+      <h4>4. Unrepeatable Read</h4>
+      <p>T2 reads X=100. T1 changes X to 200. T2 reads X again and gets <strong>200 — a different value</strong> within the same transaction.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 13. SCHEDULES ════════════════════════ -->
+<section id="s13">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(167,139,250,0.15)">📋</div>
+    <div>
+      <div class="number">13 · Schedules & Serializability</div>
+      <h2>Schedules</h2>
+    </div>
   </div>
 
-  <div class="sub-title">Disadvantages of 2PL</div>
-  <div class="grid">
-    <div class="card"><div class="badge b-red">Irrecoverable</div><div class="card-body">Basic 2PL can produce irrecoverable schedules — Strict/Rigorous 2PL fix this.</div></div>
-    <div class="card"><div class="badge b-amber">Deadlock</div><div class="card-body">T1 waits for T2's lock, T2 waits for T1's lock → neither can proceed. Circular wait = deadlock.</div></div>
-    <div class="card"><div class="badge b-purple">Cascading Rollback</div><div class="card-body">Basic 2PL allows dirty reads → cascading rollbacks possible. Strict/Rigorous 2PL prevent this.</div></div>
-  </div>
-</div>
-
-<!-- RECOVERY -->
-<div id="recovery" class="section">
-  <div class="sec-title">Log-Based Recovery</div>
-  <div class="callout callout-info"><b>The System Log</b> is a sequential, append-only file on stable storage. It records ALL transaction operations. Written BEFORE any DB modification. Cannot be corrupted by ordinary failures.</div>
-
-  <div class="sub-title">Log Entry Types</div>
-  <div class="code">[start_transaction, T]          → T has started execution
-[read_item, T, X]               → T read item X
-[write_item, T, X, old, new]    → T changed X from old_value to new_value
-[commit, T]                     → T completed successfully — changes permanent
-[abort, T]                      → T was aborted</div>
-
-  <div class="sub-title">Commit Point</div>
-  <div class="callout callout-green">
-    <b>Commit point</b> = moment when ALL operations are done AND their effects are recorded in the log.<br>
-    Then [commit, T] is written into the log.<br><br>
-    <b>Force Writing:</b> Before committing, any log data not yet on disk MUST be written to disk first (to survive a crash right after commit).
+  <div class="card">
+    <h3>Types of Schedules</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Description</th><th>Property</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Serial</strong></td><td>Transactions execute one after another (no interleaving)</td><td class="good">Always consistent</td></tr>
+          <tr><td><strong>Non-Serial</strong></td><td>Operations of multiple transactions are interleaved</td><td>May cause concurrency issues</td></tr>
+          <tr><td><strong>Serializable</strong></td><td>Produces same result as some serial schedule</td><td class="good">Consistent if serializable</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="sub-title">Recovery Techniques</div>
-  <div class="grid grid-2">
-    <div class="card">
-      <div class="badge b-blue">Deferred DB Modification</div>
-      <div class="card-title">Write to DB only AFTER commit</div>
-      <div class="card-body">
-        Log everything first. DB is NOT touched until commit.<br><br>
-        On failure before commit → just ignore the log entries. Nothing to undo.<br><br>
-        <b>REDO</b> committed transactions on recovery.
+  <div class="card">
+    <h3>Conflict Serializability</h3>
+    <p>Two operations <strong>conflict</strong> if they belong to different transactions, access the same item, and at least one is a WRITE.</p>
+    <div class="tbl-wrap" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Op 1</th><th>Op 2</th><th>Conflict?</th></tr></thead>
+        <tbody>
+          <tr><td>Read(X)</td><td>Read(X)</td><td class="good">No</td></tr>
+          <tr><td>Read(X)</td><td>Write(X)</td><td class="bad">Yes</td></tr>
+          <tr><td>Write(X)</td><td>Read(X)</td><td class="bad">Yes</td></tr>
+          <tr><td>Write(X)</td><td>Write(X)</td><td class="bad">Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px"><strong>Conflict Serializable</strong> = can be transformed into a serial schedule by swapping non-conflicting operations.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔍 Precedence Graph Algorithm</h3>
+    <ol style="padding-left:18px;line-height:2">
+      <li>Create one node per transaction (T1, T2, …)</li>
+      <li>For each conflicting pair: draw edge Ti → Tj if Ti's operation comes BEFORE Tj's conflicting operation</li>
+      <li><strong>If NO cycle</strong> → schedule IS conflict serializable</li>
+      <li><strong>If CYCLE exists</strong> → NOT conflict serializable</li>
+    </ol>
+    <div class="highlight">Serial order = topological ordering of the precedence graph</div>
+  </div>
+
+  <div class="card">
+    <h3>View Serializability — 3 Conditions</h3>
+    <ol style="padding-left:18px;line-height:2.2">
+      <li><strong>Initial Read:</strong> If Ti reads X first in S1, Ti must read X first in S2 too</li>
+      <li><strong>Updated Read:</strong> If Ti reads X written by Tj in S1, same must hold in S2</li>
+      <li><strong>Final Write:</strong> The last writer of each item must be the same in both schedules</li>
+    </ol>
+    <div class="highlight">If conflict serializable → always view serializable. But not vice versa.</div>
+  </div>
+
+  <div class="card">
+    <h3>Recoverability of Schedules</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Recoverable</strong></td><td>Tj commits only AFTER Ti commits (if Tj read data written by Ti)</td></tr>
+          <tr><td><strong>Non-Recoverable</strong></td><td>Tj commits BEFORE Ti — if Ti fails, Tj can't be undone (already committed)</td></tr>
+          <tr><td><strong>Cascading Rollback</strong></td><td>One transaction failure cascades to rollback multiple transactions</td></tr>
+          <tr><td><strong>Cascadeless</strong></td><td>Tj reads only COMMITTED values (commit of Ti before read by Tj)</td></tr>
+          <tr><td><strong>Strict</strong></td><td>Tj can't read OR write X until the last writer of X has committed/aborted</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 14. LOCKING ════════════════════════ -->
+<section id="s14">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(94,231,194,0.15)">🔒</div>
+    <div>
+      <div class="number">14 · Locking Protocols</div>
+      <h2>Locking &amp; Two-Phase Locking</h2>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Types of Locks</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Lock</th><th>Also Called</th><th>Permission</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Shared Lock (S)</strong></td><td>Read-only lock</td><td>Read only. Multiple transactions can hold S-lock simultaneously.</td></tr>
+          <tr><td><strong>Exclusive Lock (X)</strong></td><td>Write lock</td><td>Read and Write. Only ONE transaction at a time.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Lock Compatibility Matrix</h3>
+    <div class="tbl-wrap">
+      <table class="lock-matrix">
+        <thead><tr><th>Request ↓ \ Held →</th><th>S</th><th>X</th><th>None</th></tr></thead>
+        <tbody>
+          <tr><td>S</td><td class="good">Compatible</td><td class="bad">Incompatible</td><td class="good">Compatible</td></tr>
+          <tr><td>X</td><td class="bad">Incompatible</td><td class="bad">Incompatible</td><td class="good">Compatible</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Two-Phase Locking (2PL)</h3>
+    <div class="twophl">
+      <div class="phase-box" style="border-top:3px solid var(--accent1)">
+        <h4 style="color:var(--accent1)">📈 Growing Phase</h4>
+        <p>Transaction acquires (locks) all needed locks. It may NOT release any lock yet.</p>
+        <p style="margin-top:8px;font-size:0.83rem;color:var(--muted)">Ends at the <strong>lock point</strong> — when all locks have been acquired.</p>
+      </div>
+      <div class="phase-box" style="border-top:3px solid var(--accent2)">
+        <h4 style="color:var(--accent2)">📉 Shrinking Phase</h4>
+        <p>Transaction releases locks. It may NOT acquire any NEW lock.</p>
+        <p style="margin-top:8px;font-size:0.83rem;color:var(--muted)">Starts as soon as the first lock is released.</p>
       </div>
     </div>
-    <div class="card">
-      <div class="badge b-green">Immediate DB Modification</div>
-      <div class="card-title">Write to DB DURING execution</div>
-      <div class="card-body">
-        DB updated as operations happen (before commit).<br><br>
-        On failure → <b>UNDO</b> uncommitted transactions, <b>REDO</b> committed ones.<br><br>
-        Needs old_value in log for undo.
-      </div>
+    <div class="warn">🔑 KEY RULE: Once you UNLOCK, you can NEVER acquire a new lock. If a lock is acquired after an unlock → NOT 2PL!</div>
+  </div>
+
+  <div class="card">
+    <h3>Variants of 2PL</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Rule</th><th>Benefit</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Basic 2PL</strong></td><td>Growing + Shrinking phases</td><td>Ensures serializability</td></tr>
+          <tr><td><strong>Strict 2PL</strong></td><td>Hold all X-locks until commit/abort</td><td>Recoverable + Cascadeless</td></tr>
+          <tr><td><strong>Rigorous 2PL</strong></td><td>Hold ALL locks (S and X) until commit/abort</td><td>Strictest — also recoverable + cascadeless</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn">⚠️ Disadvantages of 2PL: Deadlocks, Cascading Rollbacks, Irrecoverable schedules possible (basic 2PL)</div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 15. RECOVERY ════════════════════════ -->
+<section id="s15">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(251,191,36,0.15)">🛟</div>
+    <div>
+      <div class="number">15 · Recovery &amp; Logging</div>
+      <h2>Recovery &amp; System Log</h2>
     </div>
   </div>
 
-  <div class="sub-title">Checkpointing</div>
-  <div class="callout callout-warn">
-    <b>Problem:</b> On recovery, searching the entire log from the beginning is very slow.<br><br>
-    <b>Solution — Checkpoint:</b> Periodically save a checkpoint to disk. On recovery, only transactions <b>after the last checkpoint</b> need to be processed.<br><br>
-    <b>Two lists during recovery:</b> REDO list (has [commit]) and UNDO list (has [start] but no [commit]).
+  <div class="card">
+    <h3>Types of Failures</h3>
+    <ul>
+      <li><strong>System crash</strong> — hardware/software/network error</li>
+      <li><strong>Transaction error</strong> — overflow, division by zero, bad parameters, logic errors</li>
+      <li><strong>Local exception</strong> — e.g. insufficient bank balance</li>
+      <li><strong>Disk failure</strong> — read/write malfunction or head crash</li>
+      <li><strong>Physical disaster</strong> — power failure, fire, sabotage</li>
+    </ul>
   </div>
-</div>
 
-<!-- FLASHCARDS -->
-<div id="flash" class="section">
-  <div class="sec-title">Flashcards</div>
-  <div class="fc-hint">Click the card to flip it and reveal the answer</div>
-  <div id="fc-area"></div>
-  <div class="fc-controls">
-    <button class="fc-btn" onclick="fcNav(-1)">← Prev</button>
-    <span class="fc-count" id="fc-cnt">1 / 20</span>
-    <button class="fc-btn" onclick="fcNav(1)">Next →</button>
+  <div class="card">
+    <h3>The System Log</h3>
+    <p>A <strong>sequential, append-only file</strong> on stable storage that records every database operation before it happens.</p>
+    <div class="tbl-wrap" style="margin-top:14px">
+      <table>
+        <thead><tr><th>Log Record</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>[start_transaction, T]</code></td><td>Transaction T has started</td></tr>
+          <tr><td><code>[read_item, T, X]</code></td><td>T read item X</td></tr>
+          <tr><td><code>[write_item, T, X, old, new]</code></td><td>T changed X from old_value to new_value</td></tr>
+          <tr><td><code>[commit, T]</code></td><td>T completed successfully — changes are permanent</td></tr>
+          <tr><td><code>[abort, T]</code></td><td>T was aborted</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight">Before modifying the DB, the log record is written first (<strong>Write-Ahead Logging</strong>).</div>
   </div>
-</div>
 
-<!-- EXAM Qs -->
-<div id="exam" class="section">
-  <div class="sec-title">Exam Questions with Model Answers</div>
-  <div class="callout callout-warn"><b>Tip:</b> Click "Show Answer" to reveal a model answer. These cover the most frequently tested topics in your module.</div>
-  <div id="exam-area"></div>
+  <div class="card">
+    <h3>Commit Point</h3>
+    <p>A transaction reaches its <strong>commit point</strong> when:</p>
+    <ul>
+      <li>All operations have accessed the DB successfully</li>
+      <li>Effects have been recorded in the log</li>
+      <li>A <code>[commit, T]</code> record is written to the log</li>
+    </ul>
+    <p style="margin-top:10px"><strong>Force-writing:</strong> The log must be written to disk before committing.</p>
+    <p style="margin-top:6px">On crash recovery: transactions with <code>[start]</code> but no <code>[commit]</code> are <strong>rolled back (UNDO)</strong>. Committed transactions are <strong>re-applied (REDO)</strong>.</p>
+  </div>
+
+  <div class="card">
+    <h3>Log-Based Recovery Methods</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>When DB is modified</th><th>Recovery</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Deferred Modification</strong></td><td>Only on commit (no writes before commit)</td><td>Only REDO needed</td></tr>
+          <tr><td><strong>Immediate Modification</strong></td><td>During transaction (before commit)</td><td>Both UNDO and REDO needed</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Checkpointing</h3>
+    <p>Periodic snapshots that reduce the amount of log to scan during recovery. The system writes a checkpoint record and forces all modified buffers to disk.</p>
+    <ul style="margin-top:10px">
+      <li><strong>REDO list</strong> — transactions that committed after last checkpoint → redo their writes</li>
+      <li><strong>UNDO list</strong> — transactions that had <code>[start]</code> but no <code>[commit]</code> → rollback</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════ QUICK REVIEW QUIZ ════════════════════════ -->
+<div class="quiz-box">
+  <h3>🧠 Quick Exam Review — Click to Reveal Answers</h3>
+
+  <div class="q-item" id="q1">
+    <div class="q">1. What are the 3 types of database anomalies?</div>
+    <button class="reveal-btn" onclick="toggle('q1')">Reveal</button>
+    <div class="a">Insertion Anomaly (can't add data without other data), Update Anomaly (inconsistent updates), Deletion Anomaly (losing unrelated data when deleting)</div>
+  </div>
+
+  <div class="q-item" id="q2">
+    <div class="q">2. State Armstrong's 3 axioms with examples.</div>
+    <button class="reveal-btn" onclick="toggle('q2')">Reveal</button>
+    <div class="a">Reflexivity: {A,B}→B. Augmentation: If A→B then AC→BC. Transitivity: If A→B and B→C then A→C.</div>
+  </div>
+
+  <div class="q-item" id="q3">
+    <div class="q">3. What is the difference between 3NF and BCNF?</div>
+    <button class="reveal-btn" onclick="toggle('q3')">Reveal</button>
+    <div class="a">In 3NF, for every non-trivial FD X→Y, either X is a superkey OR Y is a prime attribute. In BCNF, X must ALWAYS be a superkey — Y cannot be prime unless X is also a superkey. BCNF is stricter.</div>
+  </div>
+
+  <div class="q-item" id="q4">
+    <div class="q">4. What are the 4 ACID properties?</div>
+    <button class="reveal-btn" onclick="toggle('q4')">Reveal</button>
+    <div class="a">Atomicity (all or nothing), Consistency (valid state before and after), Isolation (transactions don't interfere), Durability (committed data persists even after crash).</div>
+  </div>
+
+  <div class="q-item" id="q5">
+    <div class="q">5. Explain the Lost Update Problem with an example.</div>
+    <button class="reveal-btn" onclick="toggle('q5')">Reveal</button>
+    <div class="a">T1 and T2 both read X=100. T1 subtracts 50 → 50. T2 adds 10 → 110. T2 writes 110 last. T1's write is lost. Final value should be 60 but is 110.</div>
+  </div>
+
+  <div class="q-item" id="q6">
+    <div class="q">6. What is the rule for 2PL? How do you check if a schedule follows 2PL?</div>
+    <button class="reveal-btn" onclick="toggle('q6')">Reveal</button>
+    <div class="a">Find the first UNLOCK in each transaction. After that point, no new LOCK should be acquired. If a lock appears after an unlock → NOT 2PL.</div>
+  </div>
+
+  <div class="q-item" id="q7">
+    <div class="q">7. What is a cascadeless schedule?</div>
+    <button class="reveal-btn" onclick="toggle('q7')">Reveal</button>
+    <div class="a">A schedule where every transaction reads only values written by COMMITTED transactions (Tj can only read X after Ti who wrote X has committed). Prevents cascading rollbacks.</div>
+  </div>
+
+  <div class="q-item" id="q8">
+    <div class="q">8. How do you check if a schedule is conflict serializable?</div>
+    <button class="reveal-btn" onclick="toggle('q8')">Reveal</button>
+    <div class="a">Draw a precedence graph. Add an edge Ti→Tj whenever Ti's operation conflicts with and comes before Tj's (R/W, W/R, or W/W on same item). If no cycle → conflict serializable. If cycle → not serializable.</div>
+  </div>
+
+  <div class="q-item" id="q9">
+    <div class="q">9. What is partial dependency? Give an example.</div>
+    <button class="reveal-btn" onclick="toggle('q9')">Reveal</button>
+    <div class="a">When a non-prime attribute depends on only PART of a composite primary key. Example: In Student_Project(Stu_ID, Proj_ID, Stu_Name, Proj_Name), Stu_Name depends only on Stu_ID (partial key) — not on the full key {Stu_ID, Proj_ID}.</div>
+  </div>
+
+  <div class="q-item" id="q10">
+    <div class="q">10. What is the Dirty Read problem?</div>
+    <button class="reveal-btn" onclick="toggle('q10')">Reveal</button>
+    <div class="a">T1 writes X=50 (uncommitted). T2 reads X=50 (dirty/uncommitted value). T1 then fails and rolls back X to 100. T2 used an invalid value that no longer exists in the database.</div>
+  </div>
 </div>
 
 </main>
 
+<footer>Module 3 · DBMS Study Guide · Good luck on your exam! 🍀</footer>
+
 <script>
-/* ── Navigation ── */
-function show(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => {
-    if (b.getAttribute('onclick') === "show('"+id+"')") b.classList.add('active');
-  });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ── Flashcards ── */
-const cards = [
-  {q:"What is a Functional Dependency X → Y?",
-   a:"X uniquely determines Y. Knowing the value of X, you always know the value of Y. X = determinant (LHS), Y = dependent (RHS)."},
-  {q:"State Armstrong's 3 Axioms of FD.",
-   a:"1. Reflexivity: If Y ⊆ X then X→Y\n2. Augmentation: If X→Y then XZ→YZ\n3. Transitivity: If X→Y and Y→Z then X→Z"},
-  {q:"Trivial vs Non-Trivial Functional Dependency?",
-   a:"Trivial: Y is a subset of X → {roll,name}→name\nNon-Trivial: Y is NOT a subset of X → roll→name"},
-  {q:"What is 1NF? State the rule.",
-   a:"All values must be ATOMIC (single, indivisible). No multi-valued attributes. Primary key must exist."},
-  {q:"What is Partial Dependency? Which NF removes it?",
-   a:"A non-prime attribute depends on PART of a composite key, not the full key. Partial dependency is removed by 2NF."},
-  {q:"What is Transitive Dependency? Which NF removes it?",
-   a:"A non-prime attribute depends on another non-prime attribute (NPA→NPA). e.g. game→feestructure when rollno is the key. Removed by 3NF."},
-  {q:"BCNF rule — how does it differ from 3NF?",
-   a:"BCNF: For every FD X→Y, X must be a SUPERKEY. 3NF allows Y to be a prime attribute even if X is not a superkey. BCNF is stricter — no such exception."},
-  {q:"ACID — what does Atomicity mean?",
-   a:"'All or Nothing' — the entire transaction executes or none of it does. No partial execution. On failure, everything is rolled back."},
-  {q:"ACID — what does Durability mean?",
-   a:"Once committed, changes are permanent even if the system crashes. Achieved via log files, mirrored disks, and backups."},
-  {q:"Explain the Lost Update Problem.",
-   a:"T1 reads X=100, T2 reads X=100. T1 writes 50 (deducted). T2 writes 110 (added 10 to its old read of 100). T1's update is LOST. Correct answer should be 60."},
-  {q:"Explain the Dirty Read (Temporary Update) Problem.",
-   a:"T1 writes X=50 (from 100), not yet committed. T2 reads X=50 and uses it. T1 FAILS and rolls back → X=100. T2 used an invalid value that never truly existed."},
-  {q:"When do two operations CONFLICT?",
-   a:"When: (1) they are from DIFFERENT transactions, (2) they access the SAME data item, (3) at least ONE is a WRITE. R-R never conflicts."},
-  {q:"How is a Precedence Graph used?",
-   a:"Draw one node per transaction. Draw edges for conflicting pairs (Ti→Tj). If the graph has NO CYCLE → conflict serializable. Topological sort gives the serial order."},
-  {q:"What is a Cascading Rollback?",
-   a:"T10 fails → T11 (read T10's data) rolls back → T12 (read T11's data) rolls back. One failure causes a chain of rollbacks."},
-  {q:"Cascadeless schedule — what is the rule?",
-   a:"A transaction reads X only after the transaction that wrote X has COMMITTED. Ti's commit appears before Tj's read. No dirty reads, no cascading rollbacks."},
-  {q:"2PL Rule — what is it?",
-   a:"Once a transaction releases ANY lock, it cannot acquire NEW locks. Growing phase (acquire) → Lock Point → Shrinking phase (release)."},
-  {q:"Strict 2PL vs Rigorous 2PL difference?",
-   a:"Strict 2PL: Hold all EXCLUSIVE (X) locks until commit/abort.\nRigorous 2PL: Hold ALL locks (S and X) until commit/abort. Rigorous is stricter."},
-  {q:"What is Force Writing in log recovery?",
-   a:"Before a transaction commits, any log data not yet written to disk must be flushed to disk first. Ensures the log survives a crash right after commit."},
-  {q:"Deferred vs Immediate DB modification?",
-   a:"Deferred: DB updated only AFTER commit. No undo needed — just ignore uncommitted logs.\nImmediate: DB updated during execution. On failure: UNDO uncommitted, REDO committed."},
-  {q:"What is a Strict Schedule?",
-   a:"No transaction can READ or WRITE item X until the last transaction that wrote X has committed or aborted. Stricter than cascadeless — prevents both dirty reads and dirty writes."}
-];
-
-let fcIdx = 0;
-function renderFC() {
-  const c = cards[fcIdx];
-  document.getElementById('fc-area').innerHTML =
-    `<div class="fc-wrap" onclick="this.querySelector('.fc-inner').classList.toggle('flipped')">
-       <div class="fc-inner">
-         <div class="fc-front"><div class="q">${c.q}</div><div class="hint">click to reveal</div></div>
-         <div class="fc-back"><div class="a">${c.a.replace(/\n/g,'<br>')}</div></div>
-       </div>
-     </div>`;
-  document.getElementById('fc-cnt').textContent = (fcIdx+1) + ' / ' + cards.length;
-}
-function fcNav(d) { fcIdx = (fcIdx+d+cards.length)%cards.length; renderFC(); }
-renderFC();
-
-/* ── Exam Questions ── */
-const examQs = [
-  {marks:'4 marks', q:'Explain the four concurrency problems with examples.',
-   a:`<b>1. Lost Update Problem:</b> Two transactions read the same value. One's write overwrites the other's. T1 reads X=100, deducts 50 → X should be 50. T2 also read X=100, adds 10 → writes 110. T1's update is lost. Correct answer: 60.<br><br>
-<b>2. Temporary Update (Dirty Read):</b> T1 writes X=50 (not committed). T2 reads X=50 and uses it. T1 FAILS and rolls back to X=100. T2 already used an invalid value.<br><br>
-<b>3. Incorrect Summary:</b> T2 computes SUM while T1 is updating records. Some values are read before the update, some after. The aggregate result is a mix of old and new values — incorrect.<br><br>
-<b>4. Unrepeatable Read:</b> T2 reads X=100. T1 updates X to 200 and commits. T2 reads X again and gets 200. Same transaction, same item, two different values.`},
-  {marks:'4 marks', q:'Explain ACID properties with examples.',
-   a:`<b>A — Atomicity ("All or Nothing"):</b> Either the entire transaction executes or none of it. Transfer: debit from X succeeds but credit to Y fails → entire transaction rolls back.<br><br>
-<b>C — Consistency:</b> DB must be consistent before and after. Transfer total before = total after (500+200=700 before, 400+300=700 after). Integrity constraints preserved.<br><br>
-<b>I — Isolation:</b> Each transaction runs as if it's the only one. Intermediate results hidden from others. Achieved via locking or concurrency control protocols.<br><br>
-<b>D — Durability:</b> Committed changes are permanent even after system crash. If system fails after commit, data is recovered when it restarts. Uses log files and mirrored disks.`},
-  {marks:'3 marks', q:'What is Normalization? Explain the need for it.',
-   a:`<b>Definition:</b> Normalization is the process of organizing a relational database to minimize redundancy and avoid anomalies. It divides large tables into smaller, related tables.<br><br>
-<b>Inventor:</b> Edgar Codd introduced 1NF, 2NF, 3NF; later Boyce-Codd Normal Form was developed with Raymond Boyce.<br><br>
-<b>Need for Normalization:</b> Without it, redundancy causes three anomalies:<br>
-• Insertion anomaly — can't add data without related data existing<br>
-• Updation anomaly — updating data in one place misses other copies<br>
-• Deletion anomaly — deleting one record accidentally removes other data`},
-  {marks:'5 marks', q:'Explain Two-Phase Locking (2PL) and its categories with advantages and disadvantages.',
-   a:`<b>Two-Phase Locking (2PL)</b> divides transaction execution into two phases:<br><br>
-<b>Phase 1 — Growing:</b> Transaction acquires all locks it needs. Cannot release any. The point where all needed locks are held = Lock Point.<br>
-<b>Phase 2 — Shrinking:</b> After first unlock, no new locks can be acquired. Only releasing.<br><br>
-<b>Key Rule:</b> You CANNOT acquire a lock after unlocking.<br><br>
-<b>Categories:</b><br>
-• <b>Basic 2PL:</b> Standard two phases.<br>
-• <b>Strict 2PL:</b> Hold all EXCLUSIVE (X) locks until commit/abort. Recoverable + cascadeless.<br>
-• <b>Rigorous 2PL:</b> Hold ALL locks (S + X) until commit/abort. Strictest form.<br><br>
-<b>Advantage:</b> Always ensures serializability.<br>
-<b>Disadvantages:</b> Basic 2PL may produce irrecoverable schedules; deadlock possible (circular wait on locks); cascading rollback possible in basic 2PL.`},
-  {marks:'3 marks', q:'Explain the System Log and Commit Point in database recovery.',
-   a:`<b>System Log:</b> A sequential, append-only file on stable storage. Records all transaction operations. Written BEFORE any DB modification. Backed up periodically. Used for UNDO and REDO operations.<br><br>
-<b>Log Entry Types:</b><br>
-• [start_transaction, T] — T started<br>
-• [read_item, T, X] — T read X<br>
-• [write_item, T, X, old, new] — T changed X<br>
-• [commit, T] — T completed successfully<br>
-• [abort, T] — T was aborted<br><br>
-<b>Commit Point:</b> Reached when ALL operations complete AND all effects are recorded in the log. Then [commit, T] is written.<br><br>
-<b>Force Writing:</b> Before committing, any unwritten log data must be flushed to disk first to ensure it survives a crash.`},
-  {marks:'4 marks', q:'What is a Precedence Graph? Check if S: R1(X), R2(X), W1(X), R2(Y), W2(Y) is conflict serializable.',
-   a:`<b>Precedence Graph:</b> A directed graph used to test conflict serializability. One node per transaction. An edge Ti→Tj is drawn when Ti has a conflicting operation before Tj's on the same item. Conflicts: W-R, R-W, W-W on same item. R-R is never a conflict.<br><br>
-<b>Schedule:</b> R1(X), R2(X), W1(X), R2(Y), W2(Y)<br><br>
-<b>Find conflicts:</b><br>
-• R2(X) and W1(X) → T2 reads before T1 writes → edge T2→T1<br>
-• R2(Y) and W2(Y) — same transaction, not applicable<br><br>
-<b>Precedence graph:</b> T2 → T1<br><br>
-<b>No cycle</b> in the graph → Schedule IS conflict serializable.<br>
-<b>Equivalent serial schedule:</b> T2 → T1`},
-  {marks:'3 marks', q:'Explain Recoverable, Cascadeless, and Strict schedules with examples.',
-   a:`<b>Recoverable Schedule:</b> If Tj reads data written by Ti, then Ti must COMMIT before Tj commits. Ensures that if Ti fails, Tj can still be rolled back. Example: T1 commits before T2 which read T1's data.<br><br>
-<b>Non-Recoverable (Irrecoverable):</b> Tj commits before Ti, then Ti fails. Tj can't be undone — unrecoverable state.<br><br>
-<b>Cascadeless Schedule:</b> Every transaction reads only committed data. Tj reads X only after Ti (who wrote X) has committed. Prevents cascading rollbacks. Example: T11 reads A only after T10 commits.<br><br>
-<b>Strict Schedule:</b> No transaction can READ or WRITE X until the last writer of X has committed or aborted. Stricter than cascadeless — prevents both dirty reads AND dirty writes.`}
-];
-
-const ea = document.getElementById('exam-area');
-examQs.forEach((eq, i) => {
-  ea.innerHTML += `<div class="eq-card">
-    <div class="eq-q">${i+1}. ${eq.q} <span class="eq-marks">${eq.marks}</span></div>
-    <button class="show-btn" onclick="toggleAns(this)">Show Answer</button>
-    <div class="eq-ans">${eq.a}</div>
-  </div>`;
-});
-function toggleAns(btn) {
-  const ans = btn.nextElementSibling;
-  ans.classList.toggle('show');
-  btn.textContent = ans.classList.contains('show') ? 'Hide Answer' : 'Show Answer';
+function toggle(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  const btn = el.querySelector('.reveal-btn');
+  btn.textContent = el.classList.contains('open') ? 'Hide' : 'Reveal';
 }
 </script>
 </body>
